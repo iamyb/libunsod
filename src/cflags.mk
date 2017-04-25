@@ -1,0 +1,14 @@
+HOST_OS:=$(shell uname -s)
+HOST_OS:=Darwin
+
+#DEBUG_FLAGS	?= -O -gdwarf-2
+DEBUG_FLAGS	?=  -gdwarf-2 -O3 -I${TOPDIR}/include
+#DEBUG_FLAGS	?=  -g -I${TOPDIR}/include
+
+UINET_DESTDIR	?= /usr/local/
+
+UINET_INSTALL	?= install
+UINET_INSTALL_DIR ?= $(UINET_INSTALL) -m 0755
+UINET_INSTALL_LIB ?= $(UINET_INSTALL) -m 0644
+UINET_INSTALL_INC ?= $(UINET_INSTALL) -m 0644
+UINET_INSTALL_BIN ?= $(UINET_INSTALL) -m 0755

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Export Env
+export RTE_SDK=$(pwd)
+export RTE_TARGET=x86_64-native-linuxapp-gcc
+export LD_LIBRARY_PATH=${RTE_SDK}/${RTE_TARGET}/lib/
+
+# Huge Page
+mkdir -p /mnt/huge 
+mount -t hugetlbfs nodev /mnt/huge
+echo 256 > /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages
+
+
+# Install rte_kni
+insmod ${RTE_SDK}/${RTE_TARGET}/kmod/rte_kni.ko
+
+# Bind eth1/2 to UIO
+modprobe uio_pci_generic
+${RTE_SDK}/tools/dpdk-devbind.py --bind=uio_pci_generic eth1
+#${RTE_SDK}/tools/dpdk-devbind.py --bind=uio_pci_generic eth2
+
+# IF CONFIG IP
+#ifconfig vEth0 192.168.56.100
+#ifconfig vEth1 192.168.56.101
+
+# start KNI app
+./examples/kni/kni/${RTE_TARGET}/kni -c 0x0c -n 2 -- -P -p 0x1 --config="(0,2,3)"
+#./examples/kni/kni/${RTE_TARGET}/kni -c 0x0c -n 2 -- -P -p 0x3 --config="(0,2,3),(1,2,3)"
+

@@ -1,0 +1,1 @@
+const char eth_pcap_pmd_info[] __attribute__((used)) = "PMD_INFO_STRING= {\"name\" : \"eth_pcap\", \"params\" : \"rx_pcap=<string> tx_pcap=<string> rx_iface=<ifc> tx_iface=<ifc> iface=<ifc>\", \"pci_ids\" : []}";

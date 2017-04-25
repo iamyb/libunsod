@@ -1,0 +1,26 @@
+TOPDIR?=${CURDIR}/..
+include ${TOPDIR}/cflags.mk
+
+SUBDIRS=libuinet libuinet_demo libev libhttp_parser libdpdk_helper liblatprof libudsock libudif
+ifeq (${HOST_OS},FreeBSD)
+SUBDIRS+=libuinetnv libuinet_memstat 
+endif
+
+default: all
+
+config:
+	(cd libev ; env CFLAGS="${DEBUG_FLAGS}" ./configure --with-uinet=../libuinet/api_include --prefix="${UINET_DESTDIR}" --includedir="${UINET_DESTDIR}/include/libev" --enable-shared=no )
+
+all:
+	for d in $(SUBDIRS); do ( cd $$d; $(MAKE) all ) ; done
+	cp ./libdpdk_helper/build/lib/libdpdk_helper.a ./libdpdk_helper/
+
+clean:
+	for d in $(SUBDIRS); do ( cd $$d; $(MAKE) clean ) ; done
+	rm ./libdpdk_helper/libdpdk_helper.a
+	rm -fr ./libdpdk_helper/build
+
+install:
+	for d in $(SUBDIRS); do ( cd $$d; $(MAKE) install ) ; done
+
+default: config all
