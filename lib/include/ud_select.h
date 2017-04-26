@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-Copyright (C) 2016 b20yang 
+Copyright (C) 2016 b20yang
 ---
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -14,7 +14,7 @@ FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License along
 with this program. If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
-#ifndef _UD_SELECT_H 
+#ifndef _UD_SELECT_H
 #define _UD_SELECT_H
 
 /* POSIX like APIs for select */
@@ -25,6 +25,6 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
    after waiting the interval specified therein.  Returns the number of ready
    descriptors, or -1 for errors. */
 int ud_select(int nfds, fd_set *readfds, fd_set *writefds,
-		      fd_set *exceptfds, struct timeval *timeout);
+              fd_set *exceptfds, struct timeval *timeout);
 
 #endif

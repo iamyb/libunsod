@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-Copyright (C) 2017 b20yang 
+Copyright (C) 2017 b20yang
 ---
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -35,33 +35,33 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 /*bsd2linux*/
 static inline int map_flags(int flags)
 {
-	int ret = 0;
-	if(flags & MSG_DONTWAIT){
-		flags &= (~MSG_DONTWAIT);
-		ret |= UINET_MSG_DONTWAIT;
-	}
+    int ret = 0;
+    if(flags & MSG_DONTWAIT) {
+        flags &= (~MSG_DONTWAIT);
+        ret |= UINET_MSG_DONTWAIT;
+    }
 #if 0
-	if(flags & MSG_EOF){
-		flags &= (~MSG_EOF);
-		ret |= UINET_MSG_EOF;
-	}
+    if(flags & MSG_EOF) {
+        flags &= (~MSG_EOF);
+        ret |= UINET_MSG_EOF;
+    }
 
-	if(flags & MSG_NBIO){
-		flags &= (~MSG_NBIO);		
-		ret |= UINET_MSG_NBIO;
-	}
+    if(flags & MSG_NBIO) {
+        flags &= (~MSG_NBIO);
+        ret |= UINET_MSG_NBIO;
+    }
 
-	if(flags & MSG_HOLE_BREAK){
-		flags &= (~MSG_HOLE_BREAK);			
-		ret |= UINET_MSG_HOLE_BREAK;
-	}
+    if(flags & MSG_HOLE_BREAK) {
+        flags &= (~MSG_HOLE_BREAK);
+        ret |= UINET_MSG_HOLE_BREAK;
+    }
 #endif
-	// flag can't be supported 
-	if(flags != 0){
-		return -1;
-	}
+    // flag can't be supported
+    if(flags != 0) {
+        return -1;
+    }
 
-	return ret;
+    return ret;
 }
 
 #if 0
@@ -86,7 +86,7 @@ static inline int map_flags(int flags)
 #define MSG_SENDPAGE_NOTLAST 0x20000 /* sendpage() internal : not the last page */
 #define MSG_BATCH       0x40000 /* sendmmsg(): more messages coming */
 #define MSG_EOF         MSG_FIN
- 
+
 #define MSG_FASTOPEN    0x20000000      /* Send data in TCP SYN */
 #define MSG_CMSG_CLOEXEC 0x40000000     /* Set close_on_exec for file
                                             descriptor received through
@@ -126,91 +126,90 @@ static inline int map_flags(int flags)
 
 static int errno_map[] = {
     0,
-	EPERM,				  /* Operation not permitted */
-	ENOENT,				  /* No such file or directory */
-	ESRCH,				  /* No such process */
-	EINTR,				  /* Interrupted system call */
-	EIO,				  /* Input/output error */
-	ENXIO,				  /* Device not configured */
-	E2BIG,				  /* Argument list too long */
-	ENOEXEC,			  /* Exec format error */
-	EBADF,				  /* Bad file descriptor */
-	ECHILD,               /* No child processes */
-	EDEADLK,              /* Resource deadlock avoided */
-	ENOMEM,               /* Cannot allocate memory */
-	EACCES,               /* Permission denied */
-	EFAULT,               /* Bad address */
-	ENOTBLK,              /* Block device required */
-	EBUSY,                /* Device busy */
-	EEXIST,               /* File exists */
-	EXDEV,                /* Cross-device link */
-	ENODEV,               /* Operation not supported by device */
-	ENOTDIR,              /* Not a directory */
-	EISDIR,               /* Is a directory */
-	EINVAL,               /* Invalid argument */
-	ENFILE,               /* Too many open files in system */
-	EMFILE,               /* Too many open files */
-	ENOTTY,               /* Inappropriate ioctl for device */
-	ETXTBSY,              /* Text file busy */
-	EFBIG,                /* File too large */
-	ENOSPC,               /* No space left on device */
-	ESPIPE,               /* Illegal seek */
-	EROFS,                /* Read-only filesystem */
-	EMLINK,               /* Too many links */
-	EPIPE,                /* Broken pipe */
-	
-	/* math software */
-	EDOM,                 /* Numerical argument out of domain */
-	ERANGE,               /* Result too large */
-	
-	/* non-blocking and interrupt i/o */
-	EAGAIN,               /* Resource temporarily unavailable */
-	EINPROGRESS,		  /* Operation now in progress */
-	EALREADY,	    	  /* Operation already in progress */
-	
-	/* ipc/network software -- argument errors */
-	ENOTSOCK,             /* Socket operation on non-socket */
-	EDESTADDRREQ,         /* Destination address required */
-	EMSGSIZE,       	  /* Message too long */
-	EPROTOTYPE,           /* Protocol wrong type for socket */
-	ENOPROTOOPT ,		  /* Protocol not available */
-	EPROTONOSUPPORT,      /* Protocol not supported */
-	ESOCKTNOSUPPORT,      /* Socket type not supported */
-	EOPNOTSUPP,           /* Operation not supported */
-	EOPNOTSUPP,           /* Operation not supported */
-	EPFNOSUPPORT,         /* Protocol family not supported */
-	EAFNOSUPPORT,         /* Address family not supported by protocol family */
-	EADDRINUSE,           /* Address already in use */
-	EADDRNOTAVAIL,        /* Can't assign requested address */
-	
-	/* ipc/network software -- operational errors */
-	ENETDOWN,             /* Network is down */
-	ENETUNREACH,          /* Network is unreachable */
-	ENETRESET,	          /* Network dropped connection on reset */
-	ECONNABORTED,         /* Software caused connection abort */
-	ECONNRESET,  		  /* Connection reset by peer */
-	ENOBUFS,              /* No buffer space available */
-	EISCONN,              /* Socket is already connected */
-	ENOTCONN,             /* Socket is not connected */
-	ESHUTDOWN,            /* Can't send after socket shutdown */
-	ETOOMANYREFS,         /* Too many references: can't splice */
-	ETIMEDOUT,            /* Operation timed out */
-	ECONNREFUSED,         /* Connection refused */
-	
-	ELOOP,                /* Too many levels of symbolic links */
-	ENAMETOOLONG          /* File name too long */
+    EPERM,				  /* Operation not permitted */
+    ENOENT,				  /* No such file or directory */
+    ESRCH,				  /* No such process */
+    EINTR,				  /* Interrupted system call */
+    EIO,				  /* Input/output error */
+    ENXIO,				  /* Device not configured */
+    E2BIG,				  /* Argument list too long */
+    ENOEXEC,			  /* Exec format error */
+    EBADF,				  /* Bad file descriptor */
+    ECHILD,               /* No child processes */
+    EDEADLK,              /* Resource deadlock avoided */
+    ENOMEM,               /* Cannot allocate memory */
+    EACCES,               /* Permission denied */
+    EFAULT,               /* Bad address */
+    ENOTBLK,              /* Block device required */
+    EBUSY,                /* Device busy */
+    EEXIST,               /* File exists */
+    EXDEV,                /* Cross-device link */
+    ENODEV,               /* Operation not supported by device */
+    ENOTDIR,              /* Not a directory */
+    EISDIR,               /* Is a directory */
+    EINVAL,               /* Invalid argument */
+    ENFILE,               /* Too many open files in system */
+    EMFILE,               /* Too many open files */
+    ENOTTY,               /* Inappropriate ioctl for device */
+    ETXTBSY,              /* Text file busy */
+    EFBIG,                /* File too large */
+    ENOSPC,               /* No space left on device */
+    ESPIPE,               /* Illegal seek */
+    EROFS,                /* Read-only filesystem */
+    EMLINK,               /* Too many links */
+    EPIPE,                /* Broken pipe */
+
+    /* math software */
+    EDOM,                 /* Numerical argument out of domain */
+    ERANGE,               /* Result too large */
+
+    /* non-blocking and interrupt i/o */
+    EAGAIN,               /* Resource temporarily unavailable */
+    EINPROGRESS,		  /* Operation now in progress */
+    EALREADY,	    	  /* Operation already in progress */
+
+    /* ipc/network software -- argument errors */
+    ENOTSOCK,             /* Socket operation on non-socket */
+    EDESTADDRREQ,         /* Destination address required */
+    EMSGSIZE,       	  /* Message too long */
+    EPROTOTYPE,           /* Protocol wrong type for socket */
+    ENOPROTOOPT,		   /* Protocol not available */
+    EPROTONOSUPPORT,      /* Protocol not supported */
+    ESOCKTNOSUPPORT,      /* Socket type not supported */
+    EOPNOTSUPP,           /* Operation not supported */
+    EOPNOTSUPP,           /* Operation not supported */
+    EPFNOSUPPORT,         /* Protocol family not supported */
+    EAFNOSUPPORT,         /* Address family not supported by protocol family */
+    EADDRINUSE,           /* Address already in use */
+    EADDRNOTAVAIL,        /* Can't assign requested address */
+
+    /* ipc/network software -- operational errors */
+    ENETDOWN,             /* Network is down */
+    ENETUNREACH,          /* Network is unreachable */
+    ENETRESET,	          /* Network dropped connection on reset */
+    ECONNABORTED,         /* Software caused connection abort */
+    ECONNRESET,  		  /* Connection reset by peer */
+    ENOBUFS,              /* No buffer space available */
+    EISCONN,              /* Socket is already connected */
+    ENOTCONN,             /* Socket is not connected */
+    ESHUTDOWN,            /* Can't send after socket shutdown */
+    ETOOMANYREFS,         /* Too many references: can't splice */
+    ETIMEDOUT,            /* Operation timed out */
+    ECONNREFUSED,         /* Connection refused */
+
+    ELOOP,                /* Too many levels of symbolic links */
+    ENAMETOOLONG          /* File name too long */
 };
 
 
 static void ud_set_errno(int error)
 {
-	if(error != 0 && error < sizeof(errno_map))
-	{
-		errno = errno_map[error];
+    if(error != 0 && error < sizeof(errno_map)) {
+        errno = errno_map[error];
 #ifdef UD_DEBUG
-		printf("BSD error: %d LINUX: error: %d\n");
+        printf("BSD error: %d LINUX: error: %d\n");
 #endif
-	}
+    }
 }
 //extern uinet_if_t ud_uif;
 
@@ -218,222 +217,221 @@ static void ud_set_errno(int error)
 /*----------------------------------------------------------------------------*/
 int ud_socket(int domain, int type, int protocol)
 {
-	int error;
-	struct uinet_socket *so = NULL;
-	error = uinet_socreate(uinet_instance_default(), 
-		domain, &so, type, 0);
+    int error;
+    struct uinet_socket *so = NULL;
+    error = uinet_socreate(uinet_instance_default(),
+                           domain, &so, type, 0);
 
-	if(!error)
-		return ud_fd_set_sock(so);
-	return error;
+    if(!error)
+        return ud_fd_set_sock(so);
+    return error;
 }
 
 int ud_accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
 {
-	struct uinet_socket *newso = NULL;
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	if(so == NULL)
-	{
+    struct uinet_socket *newso = NULL;
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    if(so == NULL) {
 //		printf("ppppppp %d\n", sockfd);
-		return -1;
-	}
-	
-	int error = uinet_soaccept(so, (struct uinet_sockaddr **)&addr, &newso);
-	if(!error)
-		return ud_fd_set_sock(newso);
-	return error;
+        return -1;
+    }
+
+    int error = uinet_soaccept(so, (struct uinet_sockaddr **)&addr, &newso);
+    if(!error)
+        return ud_fd_set_sock(newso);
+    return error;
 }
 
 /// to convert the sockaddr in POSIX to BSD version sockaddr_in
 int ud_bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
 {
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	struct sockaddr_in *iaddr = (struct sockaddr_in*)addr;
-	struct uinet_sockaddr_in uaddr;
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    struct sockaddr_in *iaddr = (struct sockaddr_in*)addr;
+    struct uinet_sockaddr_in uaddr;
 
-	uaddr.sin_len = sizeof(struct uinet_sockaddr);
-	uaddr.sin_family = iaddr->sin_family;
-	uaddr.sin_port = iaddr->sin_port;
-	memcpy((void*)&uaddr.sin_addr, (void*)&iaddr->sin_addr, sizeof(uaddr.sin_addr));
-	
-	if(so != NULL)
-		return uinet_sobind(so, (struct uinet_sockaddr *)&uaddr);
-	return -1;
+    uaddr.sin_len = sizeof(struct uinet_sockaddr);
+    uaddr.sin_family = iaddr->sin_family;
+    uaddr.sin_port = iaddr->sin_port;
+    memcpy((void*)&uaddr.sin_addr, (void*)&iaddr->sin_addr, sizeof(uaddr.sin_addr));
+
+    if(so != NULL)
+        return uinet_sobind(so, (struct uinet_sockaddr *)&uaddr);
+    return -1;
 }
 
 int ud_connect(int sockfd, const struct sockaddr *addr, socklen_t address_len)
 {
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	if(so == NULL){
-		errno = EBADF;
-		goto ERR;
-	}
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    if(so == NULL) {
+        errno = EBADF;
+        goto ERR;
+    }
 
-	struct sockaddr_in *iaddr = (struct sockaddr_in*)addr;
-	struct uinet_sockaddr_in uaddr;
+    struct sockaddr_in *iaddr = (struct sockaddr_in*)addr;
+    struct uinet_sockaddr_in uaddr;
 
-	uaddr.sin_len = sizeof(struct uinet_sockaddr);
-	uaddr.sin_family = iaddr->sin_family;
-	uaddr.sin_port = iaddr->sin_port;
-	memcpy((void*)&uaddr.sin_addr, (void*)&iaddr->sin_addr, sizeof(uaddr.sin_addr));
+    uaddr.sin_len = sizeof(struct uinet_sockaddr);
+    uaddr.sin_family = iaddr->sin_family;
+    uaddr.sin_port = iaddr->sin_port;
+    memcpy((void*)&uaddr.sin_addr, (void*)&iaddr->sin_addr, sizeof(uaddr.sin_addr));
 
-	if(so != NULL)
-		return uinet_soconnect(so, (struct uinet_sockaddr *)&uaddr);
-	errno = 0;
-	return 0;
+    if(so != NULL)
+        return uinet_soconnect(so, (struct uinet_sockaddr *)&uaddr);
+    errno = 0;
+    return 0;
 ERR:
-	return -1;
+    return -1;
 }
 
 ssize_t ud_recvfrom(int sockfd, void *buf, size_t len, int flags,
-    struct sockaddr * __restrict from, socklen_t * __restrict fromlen)
+                    struct sockaddr * __restrict from, socklen_t * __restrict fromlen)
 {
-	struct uinet_iovec iov;
-	struct uinet_uio uio;
-	int error;
-	struct uinet_sockaddr_in* uaddr;		
-	struct sockaddr_in *iaddr = (struct sockaddr_in*)from;
+    struct uinet_iovec iov;
+    struct uinet_uio uio;
+    int error;
+    struct uinet_sockaddr_in* uaddr;
+    struct sockaddr_in *iaddr = (struct sockaddr_in*)from;
 
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	if(so == NULL){
-		errno = EBADF;
-		goto ERR;
-	}
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    if(so == NULL) {
+        errno = EBADF;
+        goto ERR;
+    }
 
-	/* prepare the uio struct */
-	uio.uio_iov = &iov;
-	iov.iov_base = buf;
-	iov.iov_len = len;
-	uio.uio_iovcnt = 1;
-	uio.uio_offset = 0;
-	uio.uio_resid = len;
+    /* prepare the uio struct */
+    uio.uio_iov = &iov;
+    iov.iov_base = buf;
+    iov.iov_len = len;
+    uio.uio_iovcnt = 1;
+    uio.uio_offset = 0;
+    uio.uio_resid = len;
 
-	flags = map_flags(flags);
-	if(flags < 0){
-		ud_set_errno(UINET_EINVAL);
-		goto ERR;		
-	}
+    flags = map_flags(flags);
+    if(flags < 0) {
+        ud_set_errno(UINET_EINVAL);
+        goto ERR;
+    }
 
-	error = uinet_soreceive(so, (struct uinet_sockaddr **)&uaddr, &uio, &flags);
-	if(error != 0){
-		/* need adapt between LINUX and FreeBsd*/
-		ud_set_errno(error);
-		goto ERR;
-	}	
+    error = uinet_soreceive(so, (struct uinet_sockaddr **)&uaddr, &uio, &flags);
+    if(error != 0) {
+        /* need adapt between LINUX and FreeBsd*/
+        ud_set_errno(error);
+        goto ERR;
+    }
 
-	if(from != NULL && uaddr != NULL){
-		iaddr->sin_family = uaddr->sin_family;
-		iaddr->sin_port = uaddr->sin_port;
-		memcpy((void*)&iaddr->sin_addr, (void*)&uaddr->sin_addr, sizeof(uaddr->sin_addr));
-		*fromlen = sizeof(struct sockaddr_in);
+    if(from != NULL && uaddr != NULL) {
+        iaddr->sin_family = uaddr->sin_family;
+        iaddr->sin_port = uaddr->sin_port;
+        memcpy((void*)&iaddr->sin_addr, (void*)&uaddr->sin_addr, sizeof(uaddr->sin_addr));
+        *fromlen = sizeof(struct sockaddr_in);
 
-		// need to free this memory allocated in soreceive
-		free(uaddr); 
-	}
+        // need to free this memory allocated in soreceive
+        free(uaddr);
+    }
 
-	errno = 0;
+    errno = 0;
 //	printf("fd, %d , read: %d \n", sockfd, len - uio.uio_resid);
-	return (len - uio.uio_resid);	
+    return (len - uio.uio_resid);
 ERR:
-	return -1;
-	
+    return -1;
+
 }
 
 ssize_t ud_recv(int sockfd, void *buf, size_t len, int flags)
 {
-	return ud_recvfrom(sockfd, buf, len, flags, NULL, NULL);
+    return ud_recvfrom(sockfd, buf, len, flags, NULL, NULL);
 }
 
 
 ssize_t ud_recvmsg(int sockfd, struct msghdr *msg, int flags)
 {
-	
+
 }
 
 
 int ud_listen(int sockfd, int backlog)
 {
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	if(so == NULL){
-		errno = EBADF;
-		return -1;
-	}
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    if(so == NULL) {
+        errno = EBADF;
+        return -1;
+    }
 
-	return uinet_solisten(so, backlog);
+    return uinet_solisten(so, backlog);
 }
 
 ssize_t ud_send(int sockfd, void *buf, size_t len, int flags)
 {
-	struct uinet_iovec iov;
-	struct uinet_uio uio;
-	
-	uio.uio_iov = &iov;
-	iov.iov_base = buf;
-	iov.iov_len = len;
-	uio.uio_iovcnt = 1;
-	uio.uio_offset = 0;
-	uio.uio_resid = len;	
+    struct uinet_iovec iov;
+    struct uinet_uio uio;
 
-	flags = map_flags(flags);
-	if(flags < 0){
-		ud_set_errno(UINET_EINVAL);
-		goto ERR;		
-	}
-	
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	int error = uinet_sosend(so, NULL, &uio, flags);
-	if(error != 0){
-		/* need adapt between LINUX and FreeBsd*/
-		ud_set_errno(error);
-		goto ERR;
-	}		
-	errno = 0;
-	return (len - uio.uio_resid);		
+    uio.uio_iov = &iov;
+    iov.iov_base = buf;
+    iov.iov_len = len;
+    uio.uio_iovcnt = 1;
+    uio.uio_offset = 0;
+    uio.uio_resid = len;
+
+    flags = map_flags(flags);
+    if(flags < 0) {
+        ud_set_errno(UINET_EINVAL);
+        goto ERR;
+    }
+
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    int error = uinet_sosend(so, NULL, &uio, flags);
+    if(error != 0) {
+        /* need adapt between LINUX and FreeBsd*/
+        ud_set_errno(error);
+        goto ERR;
+    }
+    errno = 0;
+    return (len - uio.uio_resid);
 ERR:
-	return -1;
+    return -1;
 }
 
 ssize_t ud_sendto(int sockfd, const void *buf, size_t len, int flags,
-			  const struct sockaddr *addr, socklen_t addrlen)
+                  const struct sockaddr *addr, socklen_t addrlen)
 {
-	struct uinet_iovec iov;
-	struct uinet_uio uio;
+    struct uinet_iovec iov;
+    struct uinet_uio uio;
 
-	struct sockaddr_in *iaddr = (struct sockaddr_in*)addr;
-	struct uinet_sockaddr_in uaddr;
+    struct sockaddr_in *iaddr = (struct sockaddr_in*)addr;
+    struct uinet_sockaddr_in uaddr;
 
-	uaddr.sin_len = sizeof(struct uinet_sockaddr);
-	uaddr.sin_family = iaddr->sin_family;
-	uaddr.sin_port = iaddr->sin_port;
-	memcpy((void*)&uaddr.sin_addr, (void*)&iaddr->sin_addr, sizeof(uaddr.sin_addr));
+    uaddr.sin_len = sizeof(struct uinet_sockaddr);
+    uaddr.sin_family = iaddr->sin_family;
+    uaddr.sin_port = iaddr->sin_port;
+    memcpy((void*)&uaddr.sin_addr, (void*)&iaddr->sin_addr, sizeof(uaddr.sin_addr));
 
-	
-	uio.uio_iov = &iov;
-	iov.iov_base = buf;
-	iov.iov_len = len;
-	uio.uio_iovcnt = 1;
-	uio.uio_offset = 0;
-	uio.uio_resid = len;	
 
-	flags = map_flags(flags);
-	if(flags < 0){
-		ud_set_errno(UINET_EINVAL);
-		goto ERR;		
-	}
-	
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	int error = uinet_sosend(so, (struct uinet_sockaddr *)&uaddr, &uio, flags);
-	if(error != 0){
-		/* need adapt between LINUX and FreeBsd*/
-		printf("error %d \n", error);
-		ud_set_errno(error);
-		goto ERR;
-	}		
-	errno = 0;
-	return (len - uio.uio_resid);		
+    uio.uio_iov = &iov;
+    iov.iov_base = buf;
+    iov.iov_len = len;
+    uio.uio_iovcnt = 1;
+    uio.uio_offset = 0;
+    uio.uio_resid = len;
+
+    flags = map_flags(flags);
+    if(flags < 0) {
+        ud_set_errno(UINET_EINVAL);
+        goto ERR;
+    }
+
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    int error = uinet_sosend(so, (struct uinet_sockaddr *)&uaddr, &uio, flags);
+    if(error != 0) {
+        /* need adapt between LINUX and FreeBsd*/
+        printf("error %d \n", error);
+        ud_set_errno(error);
+        goto ERR;
+    }
+    errno = 0;
+    return (len - uio.uio_resid);
 ERR:
-	return -1;	
-	
+    return -1;
+
 }
 
 ssize_t ud_sendmsg(int sockfd, const struct msghdr *msg, int flags)
@@ -502,23 +500,22 @@ ssize_t ud_sendmsg(int sockfd, const struct msghdr *msg, int flags)
 
 #endif
 
-static unsigned int ud_soopts[30] = 
-{
-	0,
-	UINET_SO_DEBUG,
-	UINET_SO_REUSEADDR,
-	UINET_SO_TYPE,
-	UINET_SO_ERROR,
-	UINET_SO_DONTROUTE,
-	UINET_SO_BROADCAST,
-	UINET_SO_SNDBUF,
-	UINET_SO_RCVBUF,
-	UINET_SO_KEEPALIVE,
-	UINET_SO_OOBINLINE,
-	0,
-	0,
-	UINET_SO_LINGER
-	};
+static unsigned int ud_soopts[30] = {
+    0,
+    UINET_SO_DEBUG,
+    UINET_SO_REUSEADDR,
+    UINET_SO_TYPE,
+    UINET_SO_ERROR,
+    UINET_SO_DONTROUTE,
+    UINET_SO_BROADCAST,
+    UINET_SO_SNDBUF,
+    UINET_SO_RCVBUF,
+    UINET_SO_KEEPALIVE,
+    UINET_SO_OOBINLINE,
+    0,
+    0,
+    UINET_SO_LINGER
+};
 
 #if 0
 #define TCP_NODELAY		1	    /* Turn off Nagle's algorithm. */
@@ -552,28 +549,27 @@ static unsigned int ud_soopts[30] =
 #define TCP_FASTOPEN_CONNECT	30	/* Attempt FastOpen with connect */
 #endif
 
-static unsigned int ud_tcpopts[31] = 
-{
-	0,//0
-	UINET_TCP_NODELAY,//1/
-	UINET_TCP_MAXSEG,//2/
-	0,//3/
-	UINET_TCP_KEEPIDLE,//4/
-	UINET_TCP_KEEPINTVL,//5/
-	UINET_TCP_KEEPCNT,//6/
-	0,//7/
-	0,//8/
-	0,//9/
-	0,//10/
-	UINET_TCP_INFO,//11
-	0,//12
-	UINET_TCP_CONGESTION,//13/
-	UINET_TCP_MD5SIG,//14
+static unsigned int ud_tcpopts[31] = {
+    0,//0
+    UINET_TCP_NODELAY,//1/
+    UINET_TCP_MAXSEG,//2/
+    0,//3/
+    UINET_TCP_KEEPIDLE,//4/
+    UINET_TCP_KEEPINTVL,//5/
+    UINET_TCP_KEEPCNT,//6/
+    0,//7/
+    0,//8/
+    0,//9/
+    0,//10/
+    UINET_TCP_INFO,//11
+    0,//12
+    UINET_TCP_CONGESTION,//13/
+    UINET_TCP_MD5SIG,//14
     0,//15
     0,//16
-	0,//18
-	0,//19
-	0,//20
+    0,//18
+    0,//19
+    0,//20
     0,//21
     0,//22
     0,//23
@@ -588,148 +584,143 @@ static unsigned int ud_tcpopts[31] =
 
 static int ud_maplevelopt(int *level, int *opt)
 {
-	if(*level == 1) /* SOCKET  */
-	{
-		*level = UINET_SOL_SOCKET;
-		if(*opt > sizeof(ud_tcpopts) || ud_soopts[*opt] == 0){
-			printf("invalid opt !\n");
-			goto ERR;
-		}
+    if(*level == 1) { /* SOCKET  */
+        *level = UINET_SOL_SOCKET;
+        if(*opt > sizeof(ud_tcpopts) || ud_soopts[*opt] == 0) {
+            printf("invalid opt !\n");
+            goto ERR;
+        }
 
-		*opt = ud_soopts[*opt];
-	}
-	else if(*level == 6) /* tcp*/
-	{
-		*level = UINET_SOL_SOCKET;
-		if(*opt > sizeof(ud_tcpopts) || ud_tcpopts[*opt] == 0){
-			printf("invalid opt !\n");
-			goto ERR;
-		}
+        *opt = ud_soopts[*opt];
+    } else if(*level == 6) { /* tcp*/
+        *level = UINET_SOL_SOCKET;
+        if(*opt > sizeof(ud_tcpopts) || ud_tcpopts[*opt] == 0) {
+            printf("invalid opt !\n");
+            goto ERR;
+        }
 
-		*opt = ud_tcpopts[*opt];
-	}
-	return 0;
+        *opt = ud_tcpopts[*opt];
+    }
+    return 0;
 ERR:
-	return -1;
+    return -1;
 }
 
 int ud_setsockopt(int sockfd, int level, int optname,
-	const void *optval, socklen_t optlen)
+                  const void *optval, socklen_t optlen)
 {
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	if(so == NULL){
-		errno = EBADF;
-		goto ERR;
-	}
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    if(so == NULL) {
+        errno = EBADF;
+        goto ERR;
+    }
 
-	if((ud_maplevelopt(&level, &optname)) < 0)
-	{
-		printf("invalid level !\n");		
-		goto ERR;
-	}
+    if((ud_maplevelopt(&level, &optname)) < 0) {
+        printf("invalid level !\n");
+        goto ERR;
+    }
 
-	int error = uinet_sosetsockopt(so, level, optname, optval, optlen);
-	if(error != 0){
-		ud_set_errno(UINET_EINVAL);
-		goto ERR;
-	}
+    int error = uinet_sosetsockopt(so, level, optname, optval, optlen);
+    if(error != 0) {
+        ud_set_errno(UINET_EINVAL);
+        goto ERR;
+    }
 
-	return error;
+    return error;
 ERR:
-	return -1;
-	
+    return -1;
+
 }
 
 int ud_getsockopt(int sockfd, int level, int optname,
-	void *optval, socklen_t *optlen)
+                  void *optval, socklen_t *optlen)
 {
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	if(so == NULL){
-		errno = EBADF;
-		goto ERR;
-	}
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    if(so == NULL) {
+        errno = EBADF;
+        goto ERR;
+    }
 
-	if((ud_maplevelopt(&level, &optname)) < 0)
-	{
-		printf("invalid level !\n");		
-		goto ERR;
-	}
+    if((ud_maplevelopt(&level, &optname)) < 0) {
+        printf("invalid level !\n");
+        goto ERR;
+    }
 
-	int error = uinet_sogetsockopt(so, level, optname, optval, optlen);
-	if(error != 0){
-		ud_set_errno(UINET_EINVAL);
-		goto ERR;
-	}
+    int error = uinet_sogetsockopt(so, level, optname, optval, optlen);
+    if(error != 0) {
+        ud_set_errno(UINET_EINVAL);
+        goto ERR;
+    }
 
-	return error;
+    return error;
 ERR:
-	return -1;
+    return -1;
 }
 
 int ud_shutdown(int sockfd, int how)
 {
-	return -1;
+    return -1;
 }
 
 int ud_getpeername(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
 {
-	struct uinet_sockaddr_in* uaddr;		
-	struct sockaddr_in *iaddr = (struct sockaddr_in*)addr;
-	
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	if(so == NULL){
-		errno = EBADF;
-		goto ERR;
-	}
-	
-	int error = uinet_sogetsockaddr(so,(struct uinet_sockaddr **)&uaddr);
-	if(error != 0){
-		goto ERR;
-	}
-	
-	if(addr!= NULL && uaddr != NULL){
-		iaddr->sin_family = uaddr->sin_family;
-		iaddr->sin_port = uaddr->sin_port;
-		memcpy((void*)&iaddr->sin_addr, (void*)&uaddr->sin_addr, sizeof(uaddr->sin_addr)); 
-		addrlen = sizeof(struct sockaddr_in);
-		 
-		free(uaddr); 
-	}
+    struct uinet_sockaddr_in* uaddr;
+    struct sockaddr_in *iaddr = (struct sockaddr_in*)addr;
 
-	return 0;
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    if(so == NULL) {
+        errno = EBADF;
+        goto ERR;
+    }
+
+    int error = uinet_sogetsockaddr(so,(struct uinet_sockaddr **)&uaddr);
+    if(error != 0) {
+        goto ERR;
+    }
+
+    if(addr!= NULL && uaddr != NULL) {
+        iaddr->sin_family = uaddr->sin_family;
+        iaddr->sin_port = uaddr->sin_port;
+        memcpy((void*)&iaddr->sin_addr, (void*)&uaddr->sin_addr, sizeof(uaddr->sin_addr));
+        addrlen = sizeof(struct sockaddr_in);
+
+        free(uaddr);
+    }
+
+    return 0;
 ERR:
-	return -1;
+    return -1;
 }
 
 
 int	ud_getsockname(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
 {
-	struct uinet_sockaddr_in* uaddr;		
-	struct sockaddr_in *iaddr = (struct sockaddr_in*)addr;
-	
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	if(so == NULL){
-		errno = EBADF;
-		goto ERR;
-	}
-	
-	int error = uinet_sogetsockaddr(so,(struct uinet_sockaddr **)&uaddr);
-	if(error != 0){
-		goto ERR;
-	}
-	
-	if(addr!= NULL && uaddr != NULL){
-		iaddr->sin_family = uaddr->sin_family;
-		iaddr->sin_port = uaddr->sin_port;
-		memcpy((void*)&iaddr->sin_addr, (void*)&uaddr->sin_addr, sizeof(uaddr->sin_addr)); 
-		*addrlen = sizeof(struct sockaddr_in);
-		 
-		free(uaddr); 
-	}
+    struct uinet_sockaddr_in* uaddr;
+    struct sockaddr_in *iaddr = (struct sockaddr_in*)addr;
 
-	return 0;
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    if(so == NULL) {
+        errno = EBADF;
+        goto ERR;
+    }
+
+    int error = uinet_sogetsockaddr(so,(struct uinet_sockaddr **)&uaddr);
+    if(error != 0) {
+        goto ERR;
+    }
+
+    if(addr!= NULL && uaddr != NULL) {
+        iaddr->sin_family = uaddr->sin_family;
+        iaddr->sin_port = uaddr->sin_port;
+        memcpy((void*)&iaddr->sin_addr, (void*)&uaddr->sin_addr, sizeof(uaddr->sin_addr));
+        *addrlen = sizeof(struct sockaddr_in);
+
+        free(uaddr);
+    }
+
+    return 0;
 ERR:
-	return -1;
+    return -1;
 }
 
 

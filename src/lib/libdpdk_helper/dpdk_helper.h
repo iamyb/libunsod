@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-Copyright (C) 2017 b20yang 
+Copyright (C) 2017 b20yang
 ---
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -19,17 +19,16 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #define MAX_BURST_SIZE 512
 
-typedef struct dh_rte_mbuf_desc
-{
-	void*        rm_base;
-	void*        rm_data;
-	uint32_t     data_len;
-	uint32_t     buf_len;	
-	void*        ref_cnt;
-	uint16_t*    rm_data_len;
-	uint32_t*    rm_pkt_len;
-	uint64_t*    debug_next;
-}dh_rte_mbuf_desc;
+typedef struct dh_rte_mbuf_desc {
+    void*        rm_base;
+    void*        rm_data;
+    uint32_t     data_len;
+    uint32_t     buf_len;
+    void*        ref_cnt;
+    uint16_t*    rm_data_len;
+    uint32_t*    rm_pkt_len;
+    uint64_t*    debug_next;
+} dh_rte_mbuf_desc;
 
 int   dh_init_dpdk (const char* ifname);
 int   dh_send_pkts (const uint8_t *buf, uint16_t num);

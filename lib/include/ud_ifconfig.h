@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-Copyright (C) 2016 b20yang 
+Copyright (C) 2016 b20yang
 ---
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -16,12 +16,11 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 #ifndef _UD_IFCONFIG_H
 #define _UD_IFCONFIG_H
-struct ud_ifcfg
-{
-	const char *name;      /* eth name  */
-	const char *addr;      /* eth addr  */
-	const char *mask;      /* eth mask  */
-	const char *broadcast; /* broadcast */
+struct ud_ifcfg {
+    const char *name;      /* eth name  */
+    const char *addr;      /* eth addr  */
+    const char *mask;      /* eth mask  */
+    const char *broadcast; /* broadcast */
 };
 
 int ud_ifsetup(struct ud_ifcfg* cfg);

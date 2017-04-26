@@ -1,7 +1,7 @@
 
 /**
 ********************************************************************************
-Copyright (C) 2017 b20yang 
+Copyright (C) 2017 b20yang
 ---
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -23,32 +23,32 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ssize_t ud_write(int fd, void *buf, size_t count)
 {
-	return ud_send(fd, buf, count, 0);
+    return ud_send(fd, buf, count, 0);
 }
 
 ssize_t ud_read(int fd, void *buf, size_t count)
 {
-	return ud_recvfrom(fd, buf, count, 0, NULL, NULL);
+    return ud_recvfrom(fd, buf, count, 0, NULL, NULL);
 }
 
 int ud_fcntl(int fd, int cmd, ... /* arg */ )
 {
-	struct uinet_socket *so = ud_fd_get_sock(fd);
-	if(so == NULL){
-		errno = EBADF;
-		goto ERR;
-	}
+    struct uinet_socket *so = ud_fd_get_sock(fd);
+    if(so == NULL) {
+        errno = EBADF;
+        goto ERR;
+    }
 
-	uinet_sosetnonblocking(so, 1);
+    uinet_sosetnonblocking(so, 1);
 ERR:
-	return -1;
+    return -1;
 }
 
 int ud_close(int sockfd)
 {
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	ud_fd_free(sockfd);
-	
-	return uinet_soclose(so);	
+    struct uinet_socket *so = ud_fd_get_sock(sockfd);
+    ud_fd_free(sockfd);
+
+    return uinet_soclose(so);
 }
 

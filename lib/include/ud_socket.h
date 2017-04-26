@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-Copyright (C) 2016 b20yang 
+Copyright (C) 2016 b20yang
 ---
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -17,7 +17,7 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef _UD_SOCK_H
 #define _UD_SOCK_H
 #include <netinet/in.h>
-#include "ud_unistd.h" 
+#include "ud_unistd.h"
 
 /* Create a new socket of type TYPE in domain DOMAIN, using
    protocol PROTOCOL.  If PROTOCOL is zero, one is chosen automatically.
@@ -42,14 +42,14 @@ ssize_t ud_recv(int sockfd, void *buf, size_t len, int flags);
 /* Send N bytes of BUF on socket FD to peer at address ADDR (which is
    ADDR_LEN bytes long).  Returns the number sent, or -1 for errors. */
 ssize_t ud_sendto(int sockfd, const void *buf, size_t len, int flags,
-			  const struct sockaddr *addr, socklen_t addrlen);
+                  const struct sockaddr *addr, socklen_t addrlen);
 
 /* Read N bytes into BUF through socket FD.
    If ADDR is not NULL, fill in *ADDR_LEN bytes of it with tha address of
    the sender, and store the actual size of the address in *ADDR_LEN.
    Returns the number of bytes read or -1 for errors. */
 ssize_t ud_recvfrom(int sockfd, void *buf, size_t len, int flags,
-    struct sockaddr * __restrict from, socklen_t * __restrict fromlen);
+                    struct sockaddr * __restrict from, socklen_t * __restrict fromlen);
 
 /* Send a message described MESSAGE on socket FD.
    Returns the number of bytes sent, or -1 for errors. */
@@ -63,13 +63,13 @@ ssize_t ud_recvmsg(int sockfd, struct msghdr *msg, int flags);
    into OPTVAL (which is *OPTLEN bytes long), and set *OPTLEN to the value's
    actual length.  Returns 0 on success, -1 for errors.  */
 int ud_getsockopt(int sockfd, int level, int optname,
-	void *optval, socklen_t *optlen);
+                  void *optval, socklen_t *optlen);
 
 /* Set socket FD's option OPTNAME at protocol level LEVEL
    to *OPTVAL (which is OPTLEN bytes long).
    Returns 0 on success, -1 for errors.  */
 int ud_setsockopt(int sockfd, int level, int optname,
-	const void *optval, socklen_t optlen);
+                  const void *optval, socklen_t optlen);
 
 /* Prepare to accept connections on socket FD.
    N connection requests will be queued before further requests are refused.
