@@ -1,6 +1,6 @@
 /**
 ********************************************************************************
-Copyright (C) 2016 b20yang 
+Copyright (C) 2017 b20yang 
 ---
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -14,8 +14,8 @@ FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License along
 with this program. If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
-#ifndef _SMLD_ERROR_H_
-#define _SMLD_ERROR_H_
+#ifndef _UD_ERROR_H_
+#define _UD_ERROR_H_
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1,3 +1,4 @@
+
 /**
 ********************************************************************************
 Copyright (C) 2017 b20yang 
@@ -14,26 +15,40 @@ FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License along
 with this program. If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
-#ifndef DPDK_HELPER_H
-#define DPDK_HELPER_H
+#include <errno.h>
+#include <stdio.h>
+#include <string.h>
+#include "ud_socket.h"
+#include "ud_file.h"
 
-#define MAX_BURST_SIZE 512
-
-typedef struct dh_rte_mbuf_desc
+ssize_t ud_write(int fd, void *buf, size_t count)
 {
-	void*        rm_base;
-	void*        rm_data;
-	uint32_t     data_len;
-	uint32_t     buf_len;	
-	void*        ref_cnt;
-	uint16_t*    rm_data_len;
-	uint32_t*    rm_pkt_len;
-	uint64_t*    debug_next;
-}dh_rte_mbuf_desc;
+	return ud_send(fd, buf, count, 0);
+}
 
-int   dh_init_dpdk (const char* ifname);
-int   dh_send_pkts (const uint8_t *buf, uint16_t num);
-int   dh_recv_pkts (uint8_t *buf, uint16_t *len, dh_rte_mbuf_desc* desc);
-void  dh_free_desc (void* ptr);
-void* dh_alloc_desc(dh_rte_mbuf_desc* desc);
-#endif
+ssize_t ud_read(int fd, void *buf, size_t count)
+{
+	return ud_recvfrom(fd, buf, count, 0, NULL, NULL);
+}
+
+int ud_fcntl(int fd, int cmd, ... /* arg */ )
+{
+	struct uinet_socket *so = ud_fd_get_sock(fd);
+	if(so == NULL){
+		errno = EBADF;
+		goto ERR;
+	}
+
+	uinet_sosetnonblocking(so, 1);
+ERR:
+	return -1;
+}
+
+int ud_close(int sockfd)
+{
+	struct uinet_socket *so = ud_fd_get_sock(sockfd);
+	ud_fd_free(sockfd);
+	
+	return uinet_soclose(so);	
+}
+

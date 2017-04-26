@@ -1,3 +1,19 @@
+/**
+********************************************************************************
+Copyright (C) 2017 b20yang 
+---
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free
+Software Foundation; either version 3 of the License, or (at your option) any
+later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with this program. If not, see <http://www.gnu.org/licenses/>.
+*******************************************************************************/
 #include<stdint.h>
 #include<string.h>
 #include<stdio.h>
@@ -10,87 +26,14 @@
 #include<errno.h>
 #include<time.h>
 
-#include "ud_error.h"
-#include "uinet_api.h"
 #include <uinet_api_errno.h>
+#include "ud_error.h"
+#include "ud_file.h"
+#include "uinet_api.h"
 
-
-#define UD_SOCKET_DESC_MAX 65516
-#define UDSOCK_SHM_NAME "/udsock_shm"
-typedef struct ud_fds_table
-{
-	int num;
-	struct uinet_socket* fds[UD_SOCKET_DESC_MAX];
-}ud_fds_table;
-
-
-static ud_fds_table *fds_table=NULL;
-
-
-#define UDSOCK_SHM_SIZE (sizeof(ud_fds_table))
-
-
-/*----------------------------------------------------------------------------*/
-static void __attribute__((constructor))ud_fd_create_shm(void)
-{
-    int fd = shm_open(UDSOCK_SHM_NAME, O_CREAT|O_RDWR|O_EXCL,0666);
-    if(fd == -1){
-        if((fd = shm_open(UDSOCK_SHM_NAME, O_RDWR, 0666))==-1){
-				("shm_open");
-        }
-    }
-
-    if(ftruncate(fd, UDSOCK_SHM_SIZE) == -1)
-        handle_error("ftruncate");
-
-    uint64_t *ptr = 
-        mmap(NULL, UDSOCK_SHM_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
-    if(ptr == MAP_FAILED)
-        handle_error("mmap");
-
-    memset(ptr, 0, UDSOCK_SHM_SIZE);
-    fds_table = (ud_fds_table *)ptr;
-}
-
-static void __attribute__((destructor))ud_fd_destroy_shm(void)
-{
-    if(munmap((void*)fds_table, UDSOCK_SHM_SIZE) == -1)
-        handle_error("munmap");
-    fds_table = NULL;
-    if(shm_unlink(UDSOCK_SHM_NAME) == -1);
-}
-
-static inline int ud_fd_get_free(void)
-{
-	int i = 1;
-	for(; i < UD_SOCKET_DESC_MAX; i++)
-	{
-		if(fds_table->fds[i]==NULL) break;
-	}
-	return i;
-}
-
-static inline struct uinet_socket* ud_fd_get_sock(int fd)
-{
-	return fds_table->fds[fd];
-}
-
-static inline int ud_fd_set_sock(struct uinet_socket* sock)
-{
-	int fd = ud_fd_get_free();
-	if(fd != -1)
-		fds_table->fds[fd] = sock;
-
-	return fd;
-}
-
-static inline void ud_fd_free(int fd)
-{
-	fds_table->fds[fd] = NULL;
-}
 
 /*bsd2linux*/
-static inline int convert_flags(int flags)
+static inline int map_flags(int flags)
 {
 	int ret = 0;
 	if(flags & MSG_DONTWAIT){
@@ -122,37 +65,37 @@ static inline int convert_flags(int flags)
 }
 
 #if 0
-263 #define MSG_OOB         1
-264 #define MSG_PEEK        2
-265 #define MSG_DONTROUTE   4
-266 #define MSG_TRYHARD     4       /* Synonym for MSG_DONTROUTE for DECnet */
-267 #define MSG_CTRUNC      8
-268 #define MSG_PROBE       0x10    /* Do not send. Only probe path f.e. for MTU */
-269 #define MSG_TRUNC       0x20
-270 #define MSG_DONTWAIT    0x40    /* Nonblocking io                */
-271 #define MSG_EOR         0x80    /* End of record */
-272 #define MSG_WAITALL     0x100   /* Wait for a full request */
-273 #define MSG_FIN         0x200
-274 #define MSG_SYN         0x400
-275 #define MSG_CONFIRM     0x800   /* Confirm path validity */
-276 #define MSG_RST         0x1000
-277 #define MSG_ERRQUEUE    0x2000  /* Fetch message from error queue */
-278 #define MSG_NOSIGNAL    0x4000  /* Do not generate SIGPIPE */
-279 #define MSG_MORE        0x8000  /* Sender will send more */
-280 #define MSG_WAITFORONE  0x10000 /* recvmmsg(): block until 1+ packets avail */
-281 #define MSG_SENDPAGE_NOTLAST 0x20000 /* sendpage() internal : not the last page */
-282 #define MSG_BATCH       0x40000 /* sendmmsg(): more messages coming */
-283 #define MSG_EOF         MSG_FIN
-284 
-285 #define MSG_FASTOPEN    0x20000000      /* Send data in TCP SYN */
-286 #define MSG_CMSG_CLOEXEC 0x40000000     /* Set close_on_exec for file
-287                                            descriptor received through
-288                                            SCM_RIGHTS */
-289 #if defined(CONFIG_COMPAT)
-290 #define MSG_CMSG_COMPAT 0x80000000      /* This message needs 32 bit fixups */
-291 #else
-292 #define MSG_CMSG_COMPAT 0               /* We never have 32 bit fixups */
-293 #endif
+#define MSG_OOB         1
+#define MSG_PEEK        2
+#define MSG_DONTROUTE   4
+#define MSG_TRYHARD     4       /* Synonym for MSG_DONTROUTE for DECnet */
+#define MSG_CTRUNC      8
+#define MSG_PROBE       0x10    /* Do not send. Only probe path f.e. for MTU */
+#define MSG_TRUNC       0x20
+#define MSG_DONTWAIT    0x40    /* Nonblocking io                */
+#define MSG_EOR         0x80    /* End of record */
+#define MSG_WAITALL     0x100   /* Wait for a full request */
+#define MSG_FIN         0x200
+#define MSG_SYN         0x400
+#define MSG_CONFIRM     0x800   /* Confirm path validity */
+#define MSG_RST         0x1000
+#define MSG_ERRQUEUE    0x2000  /* Fetch message from error queue */
+#define MSG_NOSIGNAL    0x4000  /* Do not generate SIGPIPE */
+#define MSG_MORE        0x8000  /* Sender will send more */
+#define MSG_WAITFORONE  0x10000 /* recvmmsg(): block until 1+ packets avail */
+#define MSG_SENDPAGE_NOTLAST 0x20000 /* sendpage() internal : not the last page */
+#define MSG_BATCH       0x40000 /* sendmmsg(): more messages coming */
+#define MSG_EOF         MSG_FIN
+ 
+#define MSG_FASTOPEN    0x20000000      /* Send data in TCP SYN */
+#define MSG_CMSG_CLOEXEC 0x40000000     /* Set close_on_exec for file
+                                            descriptor received through
+                                            SCM_RIGHTS */
+#if defined(CONFIG_COMPAT)
+#define MSG_CMSG_COMPAT 0x80000000      /* This message needs 32 bit fixups */
+#else
+#define MSG_CMSG_COMPAT 0               /* We never have 32 bit fixups */
+#endif
 
 #define	MSG_OOB		0x1		/* process out-of-band data */
 #define	MSG_PEEK	0x2		/* peek at incoming message */
@@ -279,17 +222,7 @@ int ud_socket(int domain, int type, int protocol)
 	struct uinet_socket *so = NULL;
 	error = uinet_socreate(uinet_instance_default(), 
 		domain, &so, type, 0);
-#if 0
-	if ((error = uinet_make_socket_promiscuous(so, ud_uif))) {
-		printf("Failed to make listen socket promiscuous (%d)\n", error);
-	}
-#endif
-#if 0
-	/* Listen on all VLANs */
-	if ((error = uinet_setl2info2(so, NULL, NULL, UINET_INL2I_TAG_ANY, NULL))) {
-		printf("Listen socket L2 info set failed (%d)\n", error);
-	}
-#endif
+
 	if(!error)
 		return ud_fd_set_sock(so);
 	return error;
@@ -375,7 +308,7 @@ ssize_t ud_recvfrom(int sockfd, void *buf, size_t len, int flags,
 	uio.uio_offset = 0;
 	uio.uio_resid = len;
 
-	flags = convert_flags(flags);
+	flags = map_flags(flags);
 	if(flags < 0){
 		ud_set_errno(UINET_EINVAL);
 		goto ERR;		
@@ -412,7 +345,7 @@ ssize_t ud_recv(int sockfd, void *buf, size_t len, int flags)
 }
 
 
-ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+ssize_t ud_recvmsg(int sockfd, struct msghdr *msg, int flags)
 {
 	
 }
@@ -441,7 +374,7 @@ ssize_t ud_send(int sockfd, void *buf, size_t len, int flags)
 	uio.uio_offset = 0;
 	uio.uio_resid = len;	
 
-	flags = convert_flags(flags);
+	flags = map_flags(flags);
 	if(flags < 0){
 		ud_set_errno(UINET_EINVAL);
 		goto ERR;		
@@ -458,14 +391,6 @@ ssize_t ud_send(int sockfd, void *buf, size_t len, int flags)
 	return (len - uio.uio_resid);		
 ERR:
 	return -1;
-}
-
-int ud_close(int sockfd)
-{
-	struct uinet_socket *so = ud_fd_get_sock(sockfd);
-	ud_fd_free(sockfd);
-	
-	return uinet_soclose(so);	
 }
 
 ssize_t ud_sendto(int sockfd, const void *buf, size_t len, int flags,
@@ -490,7 +415,7 @@ ssize_t ud_sendto(int sockfd, const void *buf, size_t len, int flags,
 	uio.uio_offset = 0;
 	uio.uio_resid = len;	
 
-	flags = convert_flags(flags);
+	flags = map_flags(flags);
 	if(flags < 0){
 		ud_set_errno(UINET_EINVAL);
 		goto ERR;		
@@ -596,11 +521,11 @@ static unsigned int ud_soopts[30] =
 	};
 
 #if 0
-#define TCP_NODELAY		1	/* Turn off Nagle's algorithm. */
-#define TCP_MAXSEG		2	/* Limit MSS */
-#define TCP_CORK		3	/* Never send partially complete segments */
-#define TCP_KEEPIDLE		4	/* Start keeplives after this period */
-#define TCP_KEEPINTVL		5	/* Interval between keepalives */
+#define TCP_NODELAY		1	    /* Turn off Nagle's algorithm. */
+#define TCP_MAXSEG		2	    /* Limit MSS */
+#define TCP_CORK		3	    /* Never send partially complete segments */
+#define TCP_KEEPIDLE    4	/* Start keeplives after this period */
+#define TCP_KEEPINTVL	5	/* Interval between keepalives */
 #define TCP_KEEPCNT		6	/* Number of keepalives before death */
 #define TCP_SYNCNT		7	/* Number of SYN retransmits */
 #define TCP_LINGER2		8	/* Life time of orphaned FIN-WAIT-2 state */
@@ -609,7 +534,7 @@ static unsigned int ud_soopts[30] =
 #define TCP_INFO		11	/* Information about this connection. */
 #define TCP_QUICKACK		12	/* Block/reenable quick acks */
 #define TCP_CONGESTION		13	/* Congestion control algorithm */
-#define TCP_MD5SIG		14	/* TCP MD5 Signature (RFC2385) */
+#define TCP_MD5SIG		    14	/* TCP MD5 Signature (RFC2385) */
 #define TCP_THIN_LINEAR_TIMEOUTS 16      /* Use linear timeouts for thin streams*/
 #define TCP_THIN_DUPACK         17      /* Fast retrans. after 1 dupack */
 #define TCP_USER_TIMEOUT	18	/* How long for loss retry before timeout */
@@ -661,7 +586,7 @@ static unsigned int ud_tcpopts[31] =
     0//30
 };
 
-static int convert_level(int *level, int *opt)
+static int ud_maplevelopt(int *level, int *opt)
 {
 	if(*level == 1) /* SOCKET  */
 	{
@@ -697,7 +622,7 @@ int ud_setsockopt(int sockfd, int level, int optname,
 		goto ERR;
 	}
 
-	if((convert_level(&level, &optname)) < 0)
+	if((ud_maplevelopt(&level, &optname)) < 0)
 	{
 		printf("invalid level !\n");		
 		goto ERR;
@@ -724,7 +649,7 @@ int ud_getsockopt(int sockfd, int level, int optname,
 		goto ERR;
 	}
 
-	if((convert_level(&level, &optname)) < 0)
+	if((ud_maplevelopt(&level, &optname)) < 0)
 	{
 		printf("invalid level !\n");		
 		goto ERR;
@@ -807,101 +732,5 @@ ERR:
 	return -1;
 }
 
-ssize_t ud_write(int fd, void *buf, size_t count)
-{
-	return ud_send(fd, buf, count, 0);
-}
 
-ssize_t ud_read(int fd, void *buf, size_t count)
-{
-	return ud_recvfrom(fd, buf, count, 0, NULL, NULL);
-}
-
-int ud_select(int nfds, fd_set *readfds, fd_set *writefds,
-		   fd_set *exceptfds, struct timeval *timeout)
-{
-	int retval = 0;
-	int restarted = 0;
-	int i = 0;
-	fd_set res_read, res_write;
-	FD_ZERO(&res_read);
-	FD_ZERO(&res_write);	
-	
-RESTART:
-	for(i = 0; i < nfds; i++)
-	{
-		if(readfds!=0 && FD_ISSET(i, readfds))
-		{
-			struct uinet_socket *so = ud_fd_get_sock(i);
-			if(so == NULL){
-				errno = EBADF;
-				goto ERR;
-			}			
-
-			if(uinet_soreadable(so, 0) > 0)
-			{
-				FD_SET(i, &res_read);
-				retval++;
-			}
-		}
-
-		if(writefds!=0 && FD_ISSET(i, writefds))
-		{
-			struct uinet_socket *so = ud_fd_get_sock(i);
-			if(so == NULL){
-				errno = EBADF;
-				goto ERR;
-			}			
-
-			if(uinet_sowritable(so, 0) > 0)
-			{
-				retval++;
-				FD_SET(i, &res_write);
-			}
-		}
-	}
-
-	// LOOP inifinitely if timeout == NULL
-	if(!retval && timeout == NULL)
-		goto RESTART;	
-
-	if(!restarted && !retval && (timeout->tv_sec != 0 || timeout->tv_usec != 0))
-	{
-		//clock_nanosleep
-		if(clock_nanosleep(CLOCK_REALTIME, 0, timeout, NULL) != 0)
-		{
-			// ERRNO
-			goto ERR;
-		}
-		
-		restarted = 1;
-		goto RESTART;	
-	}
-
-	if(retval > 0)
-	{
-		memcpy(readfds, &res_read, sizeof(fd_set));
-		memcpy(writefds, &res_write, sizeof(fd_set));
-		//FD_COPY(&res_read, readfds);
-		//FD_COPY(&res_write, writefds);	
-	}
-
-	//printf("ud_selcet %d\n", retval);
-	return retval;
-ERR:
-	return -1;
-}
-
-int ud_fcntl(int fd, int cmd, ... /* arg */ )
-{
-	struct uinet_socket *so = ud_fd_get_sock(fd);
-	if(so == NULL){
-		errno = EBADF;
-		goto ERR;
-	}
-
-	uinet_sosetnonblocking(so, 1);
-ERR:
-	return -1;
-}
 

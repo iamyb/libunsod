@@ -4,8 +4,8 @@ include ${TOPDIR}/cflags.mk
 
 CFLAGS+=	${DEBUG_FLAGS} -I../libuinet/api_include -I../../../lib/include
 
-SRCS=	ud_if.c
-OBJS=	ud_if.o
+SRCS=	ud_ifconfig.c
+OBJS=	ud_ifconfig.o
 
 all: libudif.a
 
