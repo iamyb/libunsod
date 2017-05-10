@@ -267,7 +267,7 @@ if_dpdk_attach(struct uinet_if *uif)
 						  sc->rx_isfile,
 						  sc->tx_ifname, sc->tx_isfile,
 						  p_cfg->file_snapshot_length, p_cfg->file_per_flow,
-						  p_cfg->max_concurrent_files, p_cfg->dir_bits,
+						  sc->addr, p_cfg->dir_bits,
 						  epoch_number, uinet_instance_index(uif->uinst));
 	if (NULL == sc->dpdk_host_ctx) {
 		printf("%s: Failed to create dpdk handle\n", uif->name);

@@ -30,7 +30,7 @@ typedef struct dh_rte_mbuf_desc {
     uint64_t*    debug_next;
 } dh_rte_mbuf_desc;
 
-int   dh_init_dpdk (const char* ifname);
+int   dh_init_dpdk (const char* ifname, uint8_t* mac_addr);
 int   dh_send_pkts (const uint8_t *buf, uint16_t num);
 int   dh_recv_pkts (uint8_t *buf, uint16_t *len, dh_rte_mbuf_desc* desc);
 void  dh_free_desc (void* ptr);

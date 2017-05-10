@@ -137,7 +137,8 @@ struct rte_mempool *mbuf_pool_tx;
 
 static int port = 0;
 /*---------------------------------------------------------------------------*/
-static int dpdk_init(int argc, char *argv[], const char* ifname)
+static int 
+dpdk_init(int argc, char *argv[], const char* ifname, uint8_t* mac_addr)
 {
     uint8_t portid;
 
@@ -172,6 +173,9 @@ static int dpdk_init(int argc, char *argv[], const char* ifname)
                      portid);
     }
 #endif
+
+	//HARDCODE
+	rte_eth_macaddr_get(0, mac_addr);
     if (rte_lcore_count() > 1)
         printf("\nWARNING: Too much enabled lcores - "
                "App uses only 1 lcore\n");
@@ -242,8 +246,8 @@ void* dh_alloc_desc(dh_rte_mbuf_desc* desc)
 }
 
 /*---------------------------------------------------------------------------*/
-int dh_init_dpdk(const char* ifname)
+int dh_init_dpdk(const char* ifname, uint8_t* mac_addr)
 {
     char* argv[] = {"", "-c", "0x2", "-n", "1"};
-    return dpdk_init(5, argv, ifname);
+    return dpdk_init(5, argv, ifname, mac_addr);
 }

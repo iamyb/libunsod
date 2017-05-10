@@ -34,7 +34,7 @@ typedef void (*if_dpdk_handler)(void *ctx, const uint8_t *buf, unsigned int size
 
 struct if_dpdk_host_context * if_dpdk_create_handle(const char *rx_ifname, unsigned int rx_isfile, int *rx_fd, unsigned int rx_isnonblock,
 						    const char *tx_ifname, unsigned int tx_isfile, unsigned int tx_file_snaplen,
-						    unsigned int tx_file_per_flow, unsigned int tx_file_concurrent_flows, unsigned int tx_file_dirbits,
+						    unsigned int tx_file_per_flow, uint8_t* mac_addr, unsigned int tx_file_dirbits,
 						    uint32_t tx_file_epoch_no, uint32_t tx_file_instance_index);
 void if_dpdk_destroy_handle(struct if_dpdk_host_context *ctx);
 int if_dpdk_sendpacket(struct if_dpdk_host_context *ctx, const uint8_t *buf, unsigned int size,

@@ -180,13 +180,13 @@ static int init_fifo(void)
 struct if_dpdk_host_context *
 if_dpdk_create_handle(const char *rx_ifname, unsigned int rx_isfile, int *rx_fd, unsigned int rx_isnonblock,
 		      const char *tx_ifname, unsigned int tx_isfile, unsigned int tx_file_snaplen,
-		      unsigned int tx_file_per_flow, unsigned int tx_file_concurrent_flows, unsigned int tx_file_dirbits,
+		      unsigned int tx_file_per_flow, uint8_t* mac_addr, unsigned int tx_file_dirbits,
 		      uint32_t tx_file_epoch_no, uint32_t tx_file_instance_index)
 {
 	struct if_dpdk_host_context *ctx;
 	int txisrx;
 
-	if(dh_init_dpdk(rx_ifname))
+	if(dh_init_dpdk(rx_ifname, mac_addr))
 	{
 		printf("dpdk init failed....\n");
 		goto fail;
