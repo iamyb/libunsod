@@ -299,11 +299,11 @@ AM_CPPFLAGS = -I$(top_srcdir)/src
 mic_SOURCES = mic.c
 mic_CFLAGS = -g
 mic_LDADD = ../src/libiperf.la
-mic_LDFLAGS = -g -Wl,--whole-archive,-L/mnt/vmshare/libunsod/lib,-lunsod,--no-whole-archive -lpthread -lrt -ldl -lcrypto
+mic_LDFLAGS = -g -Wl,--whole-archive,-L../../../lib,-lunsod,--no-whole-archive -lpthread -lrt -ldl -lcrypto
 mis_SOURCES = mis.c
 mis_CFLAGS = -g
 mis_LDADD = ../src/libiperf.la
-mis_LDFLAGS = -g -Wl,--whole-archive,-L/mnt/vmshare/libunsod/lib,-lunsod,--no-whole-archive -lpthread -lrt -ldl -lcrypto
+mis_LDFLAGS = -g -Wl,--whole-archive,-L../../../lib,-lunsod,--no-whole-archive -lpthread -lrt -ldl -lcrypto
 all: all-am
 
 .SUFFIXES:

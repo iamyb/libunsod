@@ -90,7 +90,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = iperf3$(EXEEXT)
-AM_LDFLAGS+=-Wl,--whole-archive,-L/mnt/vmshare/libunsod/lib,-lunsod,--no-whole-archive
+AM_LDFLAGS+=-Wl,--whole-archive,-L../../../lib,-lunsod,--no-whole-archive
 noinst_PROGRAMS = t_timer$(EXEEXT) t_units$(EXEEXT) t_uuid$(EXEEXT) \
 	iperf3_profile$(EXEEXT)
 TESTS = t_timer$(EXEEXT) t_units$(EXEEXT) t_uuid$(EXEEXT)
@@ -604,7 +604,7 @@ iperf3_SOURCES = main.c
 iperf3_CFLAGS = -g
 iperf3_LDADD = libiperf.la
 iperf3_LDFLAGS = -g
-iperf3_LDFLAGS += -Wl,--whole-archive,-L/mnt/vmshare/libunsod/lib,-lunsod,--no-whole-archive -lpthread -lrt -ldl -lcrypto
+iperf3_LDFLAGS += -Wl,--whole-archive,-L../../../lib,-lunsod,--no-whole-archive -lpthread -lrt -ldl -lcrypto
 
 # Specify the sources and various flags for the profiled iperf binary. This
 # binary recompiles all the source files to make sure they are all profiled.
@@ -613,7 +613,7 @@ iperf3_profile_SOURCES = main.c \
 
 iperf3_profile_CFLAGS = -pg -g
 iperf3_profile_LDADD = libiperf.la
-iperf3_profile_LDFLAGS = -pg -g -Wl,--whole-archive,-L/mnt/vmshare/libunsod/lib,-lunsod,--no-whole-archive -lpthread -lrt -ldl -lcrypto
+iperf3_profile_LDFLAGS = -pg -g -Wl,--whole-archive,-L../../../lib,-lunsod,--no-whole-archive -lpthread -lrt -ldl -lcrypto
 
 # Specify the sources and various flags for the test cases
 t_timer_SOURCES = t_timer.c
@@ -626,7 +626,7 @@ t_units_LDFLAGS =
 t_units_LDADD = libiperf.la
 t_uuid_SOURCES = t_uuid.c
 t_uuid_CFLAGS = -g
-t_uuid_LDFLAGS = -Wl,--whole-archive,-L/mnt/vmshare/libunsod/lib,-lunsod,--no-whole-archive -lpthread -lrt -ldl -lcrypto
+t_uuid_LDFLAGS = -Wl,--whole-archive,-L../../../lib,-lunsod,--no-whole-archive -lpthread -lrt -ldl -lcrypto
 t_uuid_LDADD = libiperf.la
 dist_man_MANS = iperf3.1 libiperf.3
 all: iperf_config.h
