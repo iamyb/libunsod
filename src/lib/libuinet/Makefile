@@ -174,8 +174,9 @@ UINET_HOST_SRCS+=		\
 	uinet_api_errno.c	\
 	uinet_host_interface.c	\
 	uinet_if_dpdk_host.c	\
-	uinet_kern_shutdown.c
-#	uinet_host_sysctl_api.c
+	uinet_kern_shutdown.c \
+	uinet_host_netstat_api.c
+	#uinet_host_sysctl_api.c
 
 ifneq (${HOST_OS},Darwin)
 UINET_HOST_SRCS+= uinet_if_netmap_host.c

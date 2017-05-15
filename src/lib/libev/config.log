@@ -618,7 +618,7 @@ configure:11986: $? = 0
 configure:11986: result: yes
 configure:11986: checking for kqueue
 configure:11986: gcc -o conftest -gdwarf-2 -O3 -I/home/billyang/Public/samba_share/programming/github/libunsod/src/lib/../include   conftest.c  >&5
-/tmp/ccCizLtb.o: In function `main':
+/tmp/ccEQx1XP.o: In function `main':
 /home/billyang/Public/samba_share/programming/github/libunsod/src/lib/libev/conftest.c:65: undefined reference to `kqueue'
 collect2: error: ld returned 1 exit status
 configure:11986: $? = 1
@@ -694,7 +694,7 @@ configure: failed program was:
 configure:11986: result: no
 configure:11986: checking for port_create
 configure:11986: gcc -o conftest -gdwarf-2 -O3 -I/home/billyang/Public/samba_share/programming/github/libunsod/src/lib/../include   conftest.c  >&5
-/tmp/ccjwidb8.o: In function `main':
+/tmp/ccTBkSkV.o: In function `main':
 /home/billyang/Public/samba_share/programming/github/libunsod/src/lib/libev/conftest.c:65: undefined reference to `port_create'
 collect2: error: ld returned 1 exit status
 configure:11986: $? = 1
@@ -797,7 +797,7 @@ configure:12208: gcc -o conftest -gdwarf-2 -O3 -I/home/billyang/Public/samba_sha
 conftest.c:44:6: warning: conflicting types for built-in function 'floor' [enabled by default]
  char floor ();
       ^
-/tmp/ccloZXBI.o: In function `main':
+/tmp/ccrHCfHb.o: In function `main':
 /home/billyang/Public/samba_share/programming/github/libunsod/src/lib/libev/conftest.c:48: undefined reference to `floor'
 collect2: error: ld returned 1 exit status
 configure:12208: $? = 1

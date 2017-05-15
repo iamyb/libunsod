@@ -131,8 +131,8 @@ sigend_handler(int sig)
 static int
 run(struct iperf_test *test)
 {
-	struct ud_ifcfg ifcfg = {"eth1", "192.168.56.12", "255.255.255.0", "255.255.255.255"};
-	ud_ifsetup(&ifcfg);
+    struct ud_ifcfg ifcfg = {"eth1", "192.168.1.188", "255.255.255.0", "255.255.255.255"};
+    ud_ifsetup(&ifcfg);
     /* Termination signals. */
     iperf_catch_sigend(sigend_handler);
     if (setjmp(sigend_jmp_buf))

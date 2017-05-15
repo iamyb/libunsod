@@ -16,15 +16,24 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 #include<stdio.h>
 #include<stdint.h>
+#include<pthread.h>
 #include "uinet_api.h"
 #include "ud_ifconfig.h"
+#include "uinet_host_netstat_api.h"
 
 #define MAX_UDIF 16
 
-static struct ud_if {
+struct ud_if {
     struct ud_ifcfg cfg;
     uinet_if_t uif;
 } ud_ifs[MAX_UDIF];
+
+unsigned int udif_count = 0;
+
+uinet_if_t udif_getuif(char *ethname)
+{
+    return ud_ifs[0].uif;
+}
 
 int ud_ifsetup(struct ud_ifcfg* param)
 {
@@ -55,7 +64,14 @@ int ud_ifsetup(struct ud_ifcfg* param)
                           param->name, param->addr, param->broadcast, param->mask))) {
             printf("Loopback alias add failed %d\n", error);
         }
+        ud_ifs[udif_count].cfg = *param;
+        ud_ifs[udif_count].uif = ud_uif;
     }
+#if 1
+    int tid;
+    if(pthread_create(&tid, NULL, uinet_host_netstat_listener_thread, NULL)==-1)
+        printf("pthread_create error!\n");
+#endif
     return error;
 }
 

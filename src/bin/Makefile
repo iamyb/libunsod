@@ -2,7 +2,7 @@ TOPDIR?=${CURDIR}/..
 include ${TOPDIR}/cflags.mk
 
 #SUBDIRS=echo++ multitool tproxy
-SUBDIRS=echo++ multitool
+SUBDIRS=echo++ multitool unetstat
 ifeq (${HOST_OS},FreeBSD)
 SUBDIRS+=sysctl vmstat 
 endif
