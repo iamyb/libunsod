@@ -259,6 +259,8 @@ void main(int argc, char** argv)
             handle_error("invalid parameters!");
         }
     }
+    if(flag == e_flag_none)
+        handle_error("invalid flag!");
 
     int sock = connect_to_server();
     if(sock < 0)
