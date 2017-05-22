@@ -562,7 +562,7 @@ if_dpdk_transmit(struct ifnet *ifp, struct mbuf *m)
 {
 	struct if_dpdk_softc *sc = ifp->if_softc;
 	struct uinet_pd *volatile pd;
-	int error;
+	int error = 0;
 	
 	/*
 	 * Everything goes to the injection queue, which will be serviced
@@ -577,7 +577,42 @@ if_dpdk_transmit(struct ifnet *ifp, struct mbuf *m)
 		error = ENETUNREACH;
 		goto out;
 	}
+#if 1	
+	volatile dh_rte_mbuf_desc dh_desc;
+	void* rte_mb = dh_alloc_desc(&dh_desc);
+	if(rte_mb == NULL )
+	{
+		error = ENOBUFS;
+		goto out;
+	}
 
+	int len = m->m_pkthdr.len;
+	if(len > dh_desc.buf_len)
+	{
+		error = ENOBUFS;
+		//should free this rte mbuf
+		goto out;
+	}
+	
+
+   *dh_desc.rm_data_len = len;
+   *dh_desc.rm_pkt_len = len;
+   m_copydata(m, 0, len, (caddr_t)dh_desc.rm_data);
+
+   void* pkts[MAX_BURST_SIZE];
+   pkts[0] = rte_mb;
+   if(dh_send_pkts(pkts, 1) == 0)
+   {
+   	    error = ENOBUFS;
+		//should free this rte mbuf		
+		goto out;
+   }
+   error = 0;
+   volatile uint64_t debug_next = *(dh_desc.debug_next);
+
+#endif
+	
+#if 0
 	if (uinet_pd_mbuf_alloc_descs(sc->tx_pds, 1)) {
 		dh_rte_mbuf_desc dh_desc;
 		(void)memset(&dh_desc, 0, sizeof(dh_desc));
@@ -635,7 +670,7 @@ if_dpdk_transmit(struct ifnet *ifp, struct mbuf *m)
 	} 
 	else
 		error = ENOBUFS;
-
+#endif
  out:
 	m_freem(m);
 

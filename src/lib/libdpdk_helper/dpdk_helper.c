@@ -26,7 +26,7 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <sys/timeb.h>
 #include "dpdk_helper.h"
 
-#define RX_RING_SIZE 1024
+#define RX_RING_SIZE 4096 
 #define TX_RING_SIZE 1024
 
 #define NUM_MBUFS 8192
@@ -248,6 +248,6 @@ void* dh_alloc_desc(dh_rte_mbuf_desc* desc)
 /*---------------------------------------------------------------------------*/
 int dh_init_dpdk(const char* ifname, uint8_t* mac_addr)
 {
-    char* argv[] = {"", "-c", "0x2", "-n", "1"};
+    char* argv[] = {"", "-c", "0x8", "-n", "4"};
     return dpdk_init(5, argv, ifname, mac_addr);
 }

@@ -21,7 +21,7 @@ static void* echo_cb(void* fd)
 {
     cpu_set_t cpuset;
     CPU_ZERO(&cpuset);
-    CPU_SET(2, &cpuset);
+    CPU_SET(4, &cpuset);
     pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
 
     while(1) {
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 {
     int error;
     struct ud_ifcfg
-        ifcfg= {"eth1", "192.168.56.12", "255.255.255.0", "255.255.255.255"};
+        ifcfg= {"eth1", "192.168.1.188", "255.255.255.0", "255.255.255.255"};
 
     if((error = ud_ifsetup(&ifcfg)) != 0) {
         printf("if create/up failed %d\n", error);
@@ -61,7 +61,7 @@ int main(int argc, char** argv)
     struct sockaddr_in sin;
     struct in_addr addr;
 
-    char* ip_addr = "192.168.56.12";
+    char* ip_addr = "192.168.1.188";
     if (inet_pton(AF_INET, ip_addr, &addr) <= 0) {
         printf("Invalid address %s\n", ip_addr);
         goto done;

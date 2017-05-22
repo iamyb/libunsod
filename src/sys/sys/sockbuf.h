@@ -40,7 +40,7 @@
 #include <net/vnet.h>
 #endif
 
-#define	SB_MAX		(2*1024*1024)	/* default for max chars in sockbuf */
+#define	SB_MAX		(8*1024*1024)	/* default for max chars in sockbuf */
 
 /*
  * Constants for sb_flags field of struct sockbuf.
