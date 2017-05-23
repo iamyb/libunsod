@@ -23,4 +23,5 @@ src/lib/libuinet/device_if.c
 
 app/echo/unsod_echo
 app/echo/unsod_echo_udp
-
+src/bin/unetstat/unetstat
+src/lib/libev/config.log

@@ -175,6 +175,39 @@ static void print_udpstat(char* buf)
 }
 static void print_ipstat(char* buf)
 {
+    struct uinet_ipstat* stat = (struct uinet_ipstat* )buf;
+
+    printf("ips_total:                  %lu \n", stat->ips_total);
+    printf("ips_badsum:                 %lu \n", stat->ips_badsum);
+    printf("ips_tooshort:               %lu \n", stat->ips_tooshort);
+    printf("ips_toosmall:               %lu \n", stat->ips_toosmall);
+    printf("ips_badhlen:                %lu \n", stat->ips_badhlen);
+    printf("ips_badlen:                 %lu \n", stat->ips_badlen);
+    printf("ips_fragments:              %lu \n", stat->ips_fragments);
+    printf("ips_fragdropped:            %lu \n", stat->ips_fragdropped);
+    printf("ips_fragtimeout:            %lu \n", stat->ips_fragtimeout);
+    printf("ips_forward:                %lu \n", stat->ips_forward);
+    printf("ips_fastforward:            %lu \n", stat->ips_fastforward);
+    printf("ips_cantforward:            %lu \n", stat->ips_cantforward);
+    printf("ips_redirectsent:           %lu \n", stat->ips_redirectsent);
+    printf("ips_noproto:                %lu \n", stat->ips_noproto);
+    printf("ips_delivered:              %lu \n", stat->ips_delivered);
+    printf("ips_localout:               %lu \n", stat->ips_localout);
+    printf("ips_odropped:               %lu \n", stat->ips_odropped);
+    
+    printf("ips_reassembled:            %lu \n", stat->ips_reassembled);
+    printf("ips_fragmented:             %lu \n", stat->ips_fragmented);
+    printf("ips_ofragments:             %lu \n", stat->ips_ofragments);
+    printf("ips_cantfrag:               %lu \n", stat->ips_cantfrag);
+    printf("ips_badoptions:             %lu \n", stat->ips_badoptions);
+    printf("ips_noroute:                %lu \n", stat->ips_noroute);
+    printf("ips_badvers:                %lu \n", stat->ips_badvers); 
+
+    printf("ips_rawout:                 %lu \n", stat->ips_rawout);
+    printf("ips_toolong:                %lu \n", stat->ips_toolong);
+    printf("ips_notmember:              %lu \n", stat->ips_notmember);
+    printf("ips_nogif:                  %lu \n", stat->ips_nogif);
+    printf("ips_badaddr:                %lu \n", stat->ips_badaddr);     
 }
 
 struct s_matrix {
@@ -196,7 +229,7 @@ static struct s_matrix matrix[] = {
     {NS_TCPSTAT, sizeof(struct uinet_tcpstat),print_tcpstat},
     {NS_UDPSTAT, 0,print_udpstat},
     {NS_IFSTAT,  sizeof(struct uinet_ifstat),print_ifstat},
-    {NS_IPSTAT,  0,print_ipstat},
+    {NS_IPSTAT,     sizeof(struct uinet_ipstat),print_ipstat},
 };
 
 /*---------------------------------------------------------------------------*/

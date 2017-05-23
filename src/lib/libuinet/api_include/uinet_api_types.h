@@ -497,6 +497,37 @@ struct uinet_ifstat {
 	unsigned long  ifi_ozcopies;		/* output packets zero-copied to interface */
 };
 
+struct	uinet_ipstat {
+	unsigned long	ips_total;		/* total packets received */
+	unsigned long	ips_badsum;		/* checksum bad */
+	unsigned long	ips_tooshort;   /* packet too short */
+	unsigned long	ips_toosmall;	/* not enough data */
+	unsigned long	ips_badhlen;	/* ip header length < data size */
+	unsigned long	ips_badlen;		/* ip length < ip header length */
+	unsigned long	ips_fragments;	/* fragments received */
+	unsigned long	ips_fragdropped;/* frags dropped (dups, out of space) */
+	unsigned long	ips_fragtimeout;	/* fragments timed out */
+	unsigned long	ips_forward;		/* packets forwarded */
+	unsigned long	ips_fastforward;	/* packets fast forwarded */
+	unsigned long	ips_cantforward;	/* packets rcvd for unreachable dest */
+	unsigned long	ips_redirectsent;	/* packets forwarded on same net */
+	unsigned long	ips_noproto;		/* unknown or unsupported protocol */
+	unsigned long	ips_delivered;		/* datagrams delivered to upper level*/
+	unsigned long	ips_localout;		/* total ip packets generated here */
+	unsigned long	ips_odropped;		/* lost packets due to nobufs, etc. */
+	unsigned long	ips_reassembled;	/* total packets reassembled ok */
+	unsigned long	ips_fragmented;		/* datagrams successfully fragmented */
+	unsigned long	ips_ofragments;		/* output fragments created */
+	unsigned long	ips_cantfrag;		/* don't fragment flag was set, etc. */
+	unsigned long	ips_badoptions;		/* error in option processing */
+	unsigned long	ips_noroute;		/* packets discarded due to no route */
+	unsigned long	ips_badvers;		/* ip version != 4 */
+	unsigned long	ips_rawout;		/* total raw ip packets generated */
+	unsigned long	ips_toolong;		/* ip length > max ip packet size */
+	unsigned long	ips_notmember;		/* multicasts for unregistered grps */
+	unsigned long   ips_nogif;		/* no match gif found */
+	unsigned long	ips_badaddr;		/* invalid address on header */	
+};
 
 
 struct uinet_pool;

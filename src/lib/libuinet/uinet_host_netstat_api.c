@@ -42,6 +42,7 @@ int handle_netstat(int fd)
     struct ns_netstat_req req;
     struct uinet_tcpstat tcpstat;
     struct uinet_ifstat ifstat;
+    struct uinet_ipstat ipstat;    
     int ret = 0;
 
     int n = recv(fd, &req, sizeof(req), MSG_PEEK);
@@ -64,6 +65,14 @@ int handle_netstat(int fd)
             ret = -1;
         }
         break;
+    case NS_IPSTAT:
+        uinet_getipstat(uinet_instance_default(), &ipstat);
+        n = send(fd, &ipstat, sizeof(ipstat), 0);
+        if(n != sizeof(ipstat)) {
+            printf("IPSTAT incorrect number bytes sent\n");
+            ret = -1;
+        }
+        break;        
     default:
         printf("unknow type received \n");
         ret = -1;

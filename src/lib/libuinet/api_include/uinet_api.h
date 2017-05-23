@@ -42,6 +42,8 @@ void  uinet_finalize_thread(void);
 int   uinet_getl2info(struct uinet_socket *so, struct uinet_in_l2info *l2i);
 int   uinet_getifstat(uinet_if_t uif, struct uinet_ifstat *stat);
 void  uinet_gettcpstat(uinet_instance_t uinst, struct uinet_tcpstat *stat);
+void  uinet_getipstat(uinet_instance_t uinst, struct uinet_ipstat *stat);
+
 char *uinet_inet_ntoa(struct uinet_in_addr in, char *buf, unsigned int size);
 const char *uinet_inet_ntop(int af, const void *src, char *dst, unsigned int size);
 int   uinet_inet_pton(int af, const char *src, void *dst);
