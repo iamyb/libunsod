@@ -27,10 +27,10 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "dpdk_helper.h"
 
 #define RX_RING_SIZE 4096 
-#define TX_RING_SIZE 1024
+#define TX_RING_SIZE 2048
 
-#define NUM_MBUFS 8192
-#define MBUF_CACHE_SIZE 250
+#define NUM_MBUFS 16384 
+#define MBUF_CACHE_SIZE 256
 //#define BURST_SIZE 32
 
 static const struct rte_eth_conf port_conf_default = {
@@ -174,8 +174,8 @@ dpdk_init(int argc, char *argv[], const char* ifname, uint8_t* mac_addr)
     }
 #endif
 
-	//HARDCODE
-	rte_eth_macaddr_get(0, mac_addr);
+    //HARDCODE
+    rte_eth_macaddr_get(0, mac_addr);
     if (rte_lcore_count() > 1)
         printf("\nWARNING: Too much enabled lcores - "
                "App uses only 1 lcore\n");
@@ -228,7 +228,7 @@ void dh_free_desc(void* ptr)
 
 void* dh_alloc_desc(dh_rte_mbuf_desc* desc)
 {
-    struct rte_mbuf* mb = rte_pktmbuf_alloc(mbuf_pool_tx);
+    struct rte_mbuf* mb = rte_pktmbuf_alloc(mbuf_pool);
     if(mb != NULL) {
         desc->rm_base = mb;
         desc->rm_data = (void*)((uint8_t*)mb->buf_addr+mb->data_off);

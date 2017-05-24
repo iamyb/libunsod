@@ -1980,7 +1980,7 @@ uinet_if_default_config(uinet_iftype_t type, struct uinet_if_cfg *cfg)
         //cfg->tx_cpu = -1;
         cfg->rx_cpu = 2;
         cfg->tx_cpu = 2;
-        cfg->rx_batch_size = 1024;
+        cfg->rx_batch_size = 4096;
         cfg->tx_inject_queue_len = 2048;
         cfg->first_look_handler = NULL;
         cfg->first_look_handler_arg = NULL;
